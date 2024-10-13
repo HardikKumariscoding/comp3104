@@ -12,6 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List repository contents
+        run: ls -la  # List the contents of the current directory
+
       - name: Change directory to the project folder
         run: cd "comp3104 devops" && pwd  # Adjusting for spaces in directory name
 
