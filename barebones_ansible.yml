@@ -5,41 +5,42 @@
 
 #All this does is install things, no deep configurations and is more of a reference than anything
 
+---
 - hosts: localhost
   become: yes
   tasks:
-      - name: Install Packages
-        apt: name={{ item }}
-        with_items:
-            - openjdk-17-jdk
-            - docker.io
-            #- postgresql postgresql-contrib
+    - name: Install Packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - openjdk-17-jdk
+        - docker.io
+        # - postgresql postgresql-contrib
 
-      - name: Install Jenkins
-        apt_key: 
-          url: https://pkg.jenkins.io/debian-stable/jenkins.io.key 
-          state: present
-        become: yes
+    - name: Add Jenkins key to trusted keyring
+      command: curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | tee /etc/apt/trusted.gpg.d/jenkins.asc
+      become: yes
+      ignore_errors: yes  # Allow failure, we'll handle it
 
-      - name: Configure jenkins repo
-        apt_repository: 
-          repo: 'deb https://pkg.jenkins.io/debian-stable binary/' 
-          state: present
-        become: yes
+    - name: Configure Jenkins repository
+      apt_repository:
+        repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+        state: present
+      become: yes
 
-      - name: Update Jenkins/Ensure it is installed
-        apt: 
-          name: jenkins 
-          update_cache: yes
-        become: yes
+    - name: Update Jenkins/Ensure it is installed
+      apt:
+        name: jenkins
+        update_cache: yes
+        state: present
+      become: yes
 
-      - name: Install jenkins server
-        apt: 
-          name: jenkins 
-          state: present
-        become: yes
+    - name: Start Jenkins
+      service:
+        name: jenkins
+        state: started
+      become: yes
 
-      - name: Start Jenkins
-        service: 
           name: jenkins 
           state: started
