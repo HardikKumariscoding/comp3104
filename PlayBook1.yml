@@ -17,6 +17,6 @@
         - name: Create new folder
           #Change your machine path
           #command: mkdir /Users/moxdroid/Documents/testAnsible
-          command: mkdir /home/ubuntu/testAnsible
+          command: mkdir -p /home/ubuntu/testAnsible
 
     
