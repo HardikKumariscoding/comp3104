@@ -1,0 +1,45 @@
+######TO DO 
+#1) set templates
+#2) set varaibles
+#3) folders needed: /tasks, /vars, /templates
+
+#All this does is install things, no deep configurations and is more of a reference than anything
+
+- hosts: all # localhost
+  become: yes
+  tasks:
+      - name: Install Packages
+        apt: name={{ item }}
+        with_items:
+            - openjdk-17-jdk
+            - docker.io
+            #- postgresql postgresql-contrib
+
+      - name: Install Jenkins
+        apt_key: 
+          url: https://pkg.jenkins.io/debian-stable/jenkins.io.key 
+          state: present
+        become: yes
+
+      - name: Configure jenkins repo
+        apt_repository: 
+          repo: 'deb https://pkg.jenkins.io/debian-stable binary/' 
+          state: present
+        become: yes
+
+      - name: Update Jenkins/Ensure it is installed
+        apt: 
+          name: jenkins 
+          update_cache: yes
+        become: yes
+
+      - name: Install jenkins server
+        apt: 
+          name: jenkins 
+          state: present
+        become: yes
+
+      - name: Start Jenkins
+        service: 
+          name: jenkins 
+          state: started
