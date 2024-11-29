@@ -5,7 +5,7 @@
 
 #All this does is install things, no deep configurations and is more of a reference than anything
 
-- hosts: all # localhost
+- hosts: localhost
   become: yes
   tasks:
       - name: Install Packages
