@@ -1,6 +1,6 @@
 ######TO DO 
 #1) set templates
-#2) set varaibles
+#2) set variables
 #3) folders needed: /tasks, /vars, /templates
 
 #All this does is install things, no deep configurations and is more of a reference than anything
@@ -41,6 +41,3 @@
         name: jenkins
         state: started
       become: yes
-
-          name: jenkins 
-          state: started
